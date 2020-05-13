@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 def data_cleaning(df):
-
     #Checking for null values
     missing_cnt = df.isnull().sum()
     if missing_cnt.sum() == 0:
@@ -14,11 +14,25 @@ def data_cleaning(df):
         print(missing_cnt)
 
 
-if __name__ == "__main__":
+def main():
     data_source = './../../data/nifty/'
-    nifty_50_df = pd.read_csv(data_source + 'NIFTY_50.csv')
-    nifty_100_df = pd.read_csv(data_source + 'NIFTY_100.csv')
-    nifty_bank_df = pd.read_csv(data_source + 'NIFTY_BANK.csv')
-    print(nifty_bank_df.head)
+    data_files = os.listdir(data_source)
+    try:
+        print("Datasets Found:", data_files)
+        for data in data_files:
+            if not data.endswith(".csv"):
+                continue
+            df = pd.read_csv(data_source+data, header=None)
+            print("DATASET" + data)
+            print(df.head(2))
+            data_cleaning(df)
+    except Exception as e:
+        print("ERROR:   ", e)
+
+
+if __name__ == "__main__":
+    main()
+
+
     
 
